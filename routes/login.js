@@ -20,19 +20,13 @@ router.post('/', (req, res)=> {
     let email = req.body['email'];
     let theirPW = req.body['password'];
     let wasSuccessful = false;
-    console.log(email + theirPW);
     if(email && theirPW){
-        console.log('here');
         db.one('SELECT Password, Salt FROM Members WHERE Email=$1', email)
         .then(row=>{
-            console.log(row);
             let salt = row['salt'];
             let ourSaltedHash = row['password'];
-            console.log('HERE3');
             let theirSaltedHash = getHash(theirPW, salt);
-            console.log('HERE5');
             let wasCorrectPw = ourSaltedHash === theirSaltedHash;
-            console.log(theirPW);
             // console.log(theirSaltedHash);
             // console.log(ourSaltedHash);
             // console.log(wasCorrectPw);
