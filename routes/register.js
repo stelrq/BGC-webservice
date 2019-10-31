@@ -30,9 +30,16 @@ router.post('/', (req, res)=>{
         let params = [first, last, username, email, salted_hash, salt];
         db.none("INSERT INTO MEMBERS(FirstName, LastName, Username, Email, Password, Salt) VALUES($1, $2, $3, $4, $5, $6)", params)
          .then(()=>{
-             res.send({
-                 success:true
-             });
+            let token = jwt.sign({username: email},
+                config.secret,
+                {
+                    expiresIn: '24h'
+                }
+            );
+            res.json ({
+                success: true,
+                token: token
+            });
              sendEmail("bearygoodconnections@gmail.com", email,
               "Welcome!", "<strong>HELLO I HOPE YOU LIKE PHISH</strong>");
          }).catch((err)=>{
