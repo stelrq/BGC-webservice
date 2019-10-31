@@ -14,6 +14,10 @@ const bodyParser = require('body-parser');
 
 router.use(bodyParser.json());
 
+let config = {
+    secret: process.env.JSON_WEB_TOKEN
+};
+
 router.post('/', (req, res)=>{
     res.type('application/json');
 
